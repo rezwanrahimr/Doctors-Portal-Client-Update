@@ -1,8 +1,9 @@
-// eslint-disable-next-line no-unused-vars
-import React from "react";
+import router from "../src/Routes/Routes";
+import { RouterProvider } from "react-router-dom";
 
 const App = () => {
-  return <div></div>;
+  // Set Router Provider !
+  return <RouterProvider router={router}></RouterProvider>;
 };
 
 export default App;
