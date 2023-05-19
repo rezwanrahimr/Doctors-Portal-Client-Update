@@ -3,7 +3,7 @@ import MainLayout from "../layout/MainLayout";
 import Home from "../Pages/Home/Home/Home";
 
 // Create Browser Router & Set Routes !
-export const router = createBrowserRouter([
+const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout></MainLayout>,
@@ -15,3 +15,5 @@ export const router = createBrowserRouter([
     ],
   },
 ]);
+
+export default router;
