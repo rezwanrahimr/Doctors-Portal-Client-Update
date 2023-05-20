@@ -1,0 +1,7 @@
+.hero {
+  background-image: url("../../../assets/images/bg.png");
+  background-size: cover;
+}
+.hero-content {
+  padding: 200px 0;
+}
