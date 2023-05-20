@@ -1,0 +1,13 @@
+.appointment-container {
+  background-image: url("../../../assets/images/appointment.png");
+  background-size: cover;
+  height: 400px;
+  margin: 272px 0;
+}
+.img-position {
+  left: 50px;
+  top: -132px;
+}
+.img-position img {
+  height: 490px;
+}

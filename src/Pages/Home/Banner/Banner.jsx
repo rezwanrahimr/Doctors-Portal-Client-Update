@@ -3,8 +3,8 @@ import "./Banner.css";
 
 const Banner = () => {
   return (
-    <div className="hero">
-      <div className="hero-content flex-col lg:flex-row-reverse">
+    <div className="hero banner-bg">
+      <div className="hero-content  banner-content flex-col lg:flex-row-reverse">
         <img
           src={chair}
           className=" rounded-lg shadow-2xl"
