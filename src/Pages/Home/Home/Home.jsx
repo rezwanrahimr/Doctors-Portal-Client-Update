@@ -1,4 +1,5 @@
 import Banner from "../Banner/Banner";
+import Exceptional from "../Exceptional/Exceptional";
 import InfoCards from "../InfoCard/InfoCards";
 import Services from "../Services/Services";
 
@@ -8,6 +9,7 @@ const Home = () => {
       <Banner></Banner>
       <InfoCards></InfoCards>
       <Services></Services>
+      <Exceptional></Exceptional>
     </div>
   );
 };
