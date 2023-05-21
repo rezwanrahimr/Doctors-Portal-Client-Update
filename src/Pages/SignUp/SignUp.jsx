@@ -91,14 +91,6 @@ const SignUp = () => {
                 placeholder="password"
                 className="input input-bordered"
               />
-              <label className="label">
-                <a
-                  href="#"
-                  className="label-text-alt link link-hover text-black font-medium"
-                >
-                  Forgot password?
-                </a>
-              </label>
             </div>
             <div className="form-control mt-6">
               <button className="btn btn-accent" type="submit">

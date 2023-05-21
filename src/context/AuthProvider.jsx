@@ -4,6 +4,8 @@ import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import app from "../firebase/firebase.init";
 
@@ -20,12 +22,25 @@ const AuthProvider = ({ children }) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
+  //   Sign In With Email & Password!
+  const signInwithEmail = (email, password) => {
+    return signInWithEmailAndPassword(auth, email, password);
+  };
   //   Google Login!
   const signInWithGoogle = () => {
     return signInWithPopup(auth, GoogleProvider);
   };
+  //   Reset Password!
+  const resetPassword = (email) => {
+    return sendPasswordResetEmail(auth, email);
+  };
   // Context Value!
-  const AuthInfo = { createUserWithEmail, signInWithGoogle };
+  const AuthInfo = {
+    createUserWithEmail,
+    signInwithEmail,
+    signInWithGoogle,
+    resetPassword,
+  };
   return (
     <div>
       <AuthContext.Provider value={AuthInfo}>{children}</AuthContext.Provider>

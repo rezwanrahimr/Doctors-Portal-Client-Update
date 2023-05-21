@@ -1,11 +1,47 @@
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../context/AuthProvider";
 
 const Login = () => {
+  const [email, setEmail] = useState(null);
+  // Call Context
+  const { signInwithEmail, signInWithGoogle, resetPassword } =
+    useContext(AuthContext);
   const handleLogin = (event) => {
     event.preventDefault();
     const email = event.target.email.value;
     const password = event.target.password.value;
-    console.log(email, password);
+    signInwithEmail(email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+
+        console.log(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorMessage);
+      });
+  };
+
+  // Google Login
+  const handleGoogleLogin = () => {
+    signInWithGoogle()
+      .then((result) => {
+        const user = result.user;
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        const email = error.customData.email;
+      });
+  };
+
+  // Reset Email Password!
+  const handleResetPassword = () => {
+    if (email) {
+      resetPassword(email);
+    }
   };
   return (
     <div className="hero min-h-screen my-24">
@@ -18,6 +54,7 @@ const Login = () => {
                 <span className="label-text text-black font-medium">Email</span>
               </label>
               <input
+                onChange={(e) => setEmail(e.target.value)}
                 type="text"
                 name="email"
                 placeholder="email"
@@ -37,12 +74,12 @@ const Login = () => {
                 className="input input-bordered"
               />
               <label className="label">
-                <a
-                  href="#"
+                <Link
+                  onClick={handleResetPassword}
                   className="label-text-alt link link-hover text-black font-medium"
                 >
                   Forgot password?
-                </a>
+                </Link>
               </label>
             </div>
             <div className="form-control mt-6">
@@ -63,7 +100,10 @@ const Login = () => {
               <hr />
               or <hr />
             </label>
-            <button className="btn btn-outline btn-accent">
+            <button
+              className="btn btn-outline btn-accent"
+              onClick={handleGoogleLogin}
+            >
               CONTINUE WITH GOOGLE
             </button>
           </form>
