@@ -1,21 +1,49 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import { AuthContext } from "../../context/AuthProvider";
 
 const SignUp = () => {
+  // Call Context!
+  const { createUserWithEmail, signInWithGoogle } = useContext(AuthContext);
   const handleSignUp = (event) => {
     event.preventDefault();
     const name = event.target.name.value;
-
     const email = event.target.email.value;
     const password = event.target.password.value;
 
     if (password.length < 8) {
-      Swal.fire({
+      return Swal.fire({
         icon: "error",
         title: "Password Must be 8 Charter",
         text: "Something went wrong!",
       });
     }
+
+    createUserWithEmail(email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorMessage);
+      });
+  };
+
+  // Sign in with Google!
+  const handleGoogleSignUp = () => {
+    signInWithGoogle()
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        const email = error.customData.email;
+      });
   };
   return (
     <div className="hero min-h-screen my-24">
@@ -90,7 +118,10 @@ const SignUp = () => {
               <hr />
               or <hr />
             </label>
-            <button className="btn btn-outline btn-accent">
+            <button
+              className="btn btn-outline btn-accent"
+              onClick={handleGoogleSignUp}
+            >
               CONTINUE WITH GOOGLE
             </button>
           </form>
