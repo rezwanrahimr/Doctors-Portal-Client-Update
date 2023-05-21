@@ -1,23 +1,49 @@
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
-const Login = () => {
-  const handleLogin = (event) => {
+const SignUp = () => {
+  const handleSignUp = (event) => {
     event.preventDefault();
+    const name = event.target.name.value;
+
     const email = event.target.email.value;
     const password = event.target.password.value;
-    console.log(email, password);
+
+    if (password.length < 8) {
+      Swal.fire({
+        icon: "error",
+        title: "Password Must be 8 Charter",
+        text: "Something went wrong!",
+      });
+    }
   };
   return (
     <div className="hero min-h-screen my-24">
       <div className="hero-content flex-col lg:flex-row-reverse">
-        <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-          <form className="card-body " onSubmit={handleLogin}>
-            <h1 className="text-2xl font-bold text-center">Login</h1>
+        <div
+          className="card flex-shrink-0   shadow-2xl bg-base-100"
+          style={{ width: "353px" }}
+        >
+          <form className="card-body " onSubmit={handleSignUp}>
+            <h1 className="text-2xl font-bold text-center">Sign Up</h1>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text text-black font-medium">Name</span>
+              </label>
+              <input
+                required
+                type="text"
+                name="name"
+                placeholder=" Name"
+                className="input input-bordered w-full"
+              />
+            </div>
             <div className="form-control">
               <label className="label">
                 <span className="label-text text-black font-medium">Email</span>
               </label>
               <input
+                required
                 type="text"
                 name="email"
                 placeholder="email"
@@ -31,6 +57,7 @@ const Login = () => {
                 </span>
               </label>
               <input
+                required
                 type="text"
                 name="password"
                 placeholder="password"
@@ -47,16 +74,16 @@ const Login = () => {
             </div>
             <div className="form-control mt-6">
               <button className="btn btn-accent" type="submit">
-                Login
+                Sign up
               </button>
             </div>
             <label className="label text-sm">
-              New to Doctors Portal?
+              Already Have a Account?
               <Link
-                to="/signUp"
+                to="/login"
                 className="label-text-alt link link-hover text-secondary font-medium text-sm "
               >
-                Create new account
+                Login
               </Link>
             </label>
             <label className="label">
@@ -73,4 +100,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;
