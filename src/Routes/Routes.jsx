@@ -5,8 +5,8 @@ import MakeAppointment from "../Pages/MakeAppointment/MakeAppointment/MakeAppoin
 import LoginLayout from "../layout/LoginLayout";
 import Login from "../Pages/Login/Login";
 import SignUp from "../Pages/SignUp/SignUp";
-import Dashboard from "../Pages/Dashboard/Dashboard/Dashboard";
 import PrivateRoute from "./PrivateRoute";
+import DashboardLayout from "../layout/DashboardLayout";
 
 // Create Browser Router & Set Routes !
 const router = createBrowserRouter([
@@ -42,7 +42,7 @@ const router = createBrowserRouter([
     path: "/dashboard",
     element: (
       <PrivateRoute>
-        <Dashboard></Dashboard>
+        <DashboardLayout></DashboardLayout>
       </PrivateRoute>
     ),
   },
