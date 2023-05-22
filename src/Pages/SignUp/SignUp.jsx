@@ -1,12 +1,12 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
 import { AuthContext } from "../../context/AuthProvider";
 
 const SignUp = () => {
   const [errorMessage, setErrorMessage] = useState("");
   // Call Context!
-  const { createUserWithEmail, signInWithGoogle } = useContext(AuthContext);
+  const { createUserWithEmail, signInWithGoogle, profileUpdate } =
+    useContext(AuthContext);
   const handleSignUp = (event) => {
     event.preventDefault();
     const name = event.target.name.value;
@@ -16,8 +16,15 @@ const SignUp = () => {
     createUserWithEmail(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user);
+        const profileInfo = {
+          displayName: `${name}`,
+        };
+        user &&
+          profileUpdate(profileInfo)
+            .then(() => {})
+            .catch((err) => console.log(err));
       })
+
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;

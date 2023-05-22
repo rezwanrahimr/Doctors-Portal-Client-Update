@@ -1,15 +1,20 @@
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 import Swal from "sweetalert2";
 
 const Login = () => {
   const [email, setEmail] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
-
   // Call Context
   const { signInwithEmail, signInWithGoogle, resetPassword } =
     useContext(AuthContext);
+
+  let navigate = useNavigate();
+  let location = useLocation();
+
+  let from = location.state?.from?.pathname || "/";
+
   const handleLogin = (event) => {
     event.preventDefault();
     const email = event.target.email.value;
@@ -17,7 +22,7 @@ const Login = () => {
     signInwithEmail(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user);
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -31,6 +36,7 @@ const Login = () => {
     signInWithGoogle()
       .then((result) => {
         const user = result.user;
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         const errorCode = error.code;
