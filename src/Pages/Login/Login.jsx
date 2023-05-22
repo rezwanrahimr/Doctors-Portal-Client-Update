@@ -1,9 +1,12 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const [email, setEmail] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
+
   // Call Context
   const { signInwithEmail, signInWithGoogle, resetPassword } =
     useContext(AuthContext);
@@ -14,13 +17,12 @@ const Login = () => {
     signInwithEmail(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-
         console.log(user);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorMessage);
+        setErrorMessage(errorMessage);
       });
   };
 
@@ -34,20 +36,33 @@ const Login = () => {
         const errorCode = error.code;
         const errorMessage = error.message;
         const email = error.customData.email;
+        setErrorMessage(errorMessage);
       });
   };
 
   // Reset Email Password!
   const handleResetPassword = () => {
+    if (!email) {
+      Swal.fire("Please...", "Enter Your Email !", "question");
+    }
     if (email) {
-      resetPassword(email);
+      resetPassword(email)
+        .then(() => {
+          Swal.fire("Please...", "Check Your Email !", "success");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorMessage);
+        });
     }
   };
+
   return (
     <div className="hero min-h-screen my-24">
       <div className="hero-content flex-col lg:flex-row-reverse">
-        <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-          <form className="card-body " onSubmit={handleLogin}>
+        <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 py-4">
+          <form className="px-8" onSubmit={handleLogin}>
             <h1 className="text-2xl font-bold text-center">Login</h1>
             <div className="form-control">
               <label className="label">
@@ -86,7 +101,9 @@ const Login = () => {
               <button className="btn btn-accent" type="submit">
                 Login
               </button>
+              <p className="text-red-500">{errorMessage && errorMessage}</p>
             </div>
+
             <label className="label text-sm">
               New to Doctors Portal?
               <Link
@@ -96,17 +113,19 @@ const Login = () => {
                 Create new account
               </Link>
             </label>
-            <label className="label">
-              <hr />
-              or <hr />
-            </label>
+          </form>
+          <label className="label">
+            <hr />
+            or <hr />
+          </label>
+          <div className="form-control mx-8">
             <button
               className="btn btn-outline btn-accent"
               onClick={handleGoogleLogin}
             >
               CONTINUE WITH GOOGLE
             </button>
-          </form>
+          </div>
         </div>
       </div>
     </div>

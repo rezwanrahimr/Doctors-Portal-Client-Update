@@ -1,9 +1,10 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../context/AuthProvider";
 
 const SignUp = () => {
+  const [errorMessage, setErrorMessage] = useState("");
   // Call Context!
   const { createUserWithEmail, signInWithGoogle } = useContext(AuthContext);
   const handleSignUp = (event) => {
@@ -11,14 +12,6 @@ const SignUp = () => {
     const name = event.target.name.value;
     const email = event.target.email.value;
     const password = event.target.password.value;
-
-    if (password.length < 8) {
-      return Swal.fire({
-        icon: "error",
-        title: "Password Must be 8 Charter",
-        text: "Something went wrong!",
-      });
-    }
 
     createUserWithEmail(email, password)
       .then((userCredential) => {
@@ -28,7 +21,7 @@ const SignUp = () => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorMessage);
+        setErrorMessage(errorMessage);
       });
   };
 
@@ -43,6 +36,7 @@ const SignUp = () => {
         const errorCode = error.code;
         const errorMessage = error.message;
         const email = error.customData.email;
+        setErrorMessage(errorMessage);
       });
   };
   return (
@@ -96,6 +90,7 @@ const SignUp = () => {
               <button className="btn btn-accent" type="submit">
                 Sign up
               </button>
+              <p className="text-red-500">{errorMessage && errorMessage}</p>
             </div>
             <label className="label text-sm">
               Already Have a Account?
