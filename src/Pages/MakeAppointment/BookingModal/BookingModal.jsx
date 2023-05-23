@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../../context/AuthProvider";
+import Swal from "sweetalert2";
 
 const BookingModal = ({
   selectdAppointment,
@@ -19,15 +20,30 @@ const BookingModal = ({
     const number = form.number.value;
     const email = form.email.value;
 
-    console.log(`
-    ${date}
-    ${slots}
-    ${fullName}
-    ${number}
-    ${email}
-    `);
+    const booking = {
+      appointmentDate: selectedDate,
+      treatmentName: name,
+      patientName: fullName,
+      slots,
+      email,
+      number,
+    };
 
-    setSelectedAppointment(null);
+    // Post Booking Database
+    fetch("http://localhost:5000/bookings", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(booking),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.acknowledged) {
+          setSelectedAppointment(null);
+          Swal.fire("Success !", "Booking is Confirm !", "success");
+        }
+      });
   };
   return (
     <>
