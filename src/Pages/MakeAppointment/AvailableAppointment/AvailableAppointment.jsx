@@ -7,20 +7,25 @@ import Loader from "../../Shared/Loader/Loader";
 
 const AvailableAppointment = ({ selectedDate }) => {
   const [selectdAppointment, setSelectedAppointment] = useState(null);
-
+  const date = format(selectedDate, "PP");
   const {
     data: availableOptions,
     isLoading,
-    isError,
+    refetch,
   } = useQuery({
-    queryKey: ["appointmentOptions"],
+    queryKey: ["appointmentOptions", date],
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000/appointmentOptions");
+      const res = await fetch(
+        `http://localhost:5000/appointmentOptions?date=${date}`
+      );
       const data = await res.json();
       return data;
     },
   });
 
+  if (isLoading) {
+    return <Loader></Loader>;
+  }
   return (
     <section className="my-14">
       <div className="text-center">
@@ -44,6 +49,7 @@ const AvailableAppointment = ({ selectedDate }) => {
           selectdAppointment={selectdAppointment}
           selectedDate={selectedDate}
           setSelectedAppointment={setSelectedAppointment}
+          refetch={refetch}
         ></BookingModal>
       )}
     </section>

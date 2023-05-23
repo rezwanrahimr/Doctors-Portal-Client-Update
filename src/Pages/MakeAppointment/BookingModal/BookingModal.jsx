@@ -7,6 +7,7 @@ const BookingModal = ({
   selectdAppointment,
   selectedDate,
   setSelectedAppointment,
+  refetch,
 }) => {
   const { name, slots } = selectdAppointment;
   const { user } = useContext(AuthContext);
@@ -21,7 +22,7 @@ const BookingModal = ({
     const email = form.email.value;
 
     const booking = {
-      appointmentDate: selectedDate,
+      appointmentDate: date,
       treatmentName: name,
       patientName: fullName,
       slots,
@@ -42,6 +43,7 @@ const BookingModal = ({
         if (data.acknowledged) {
           setSelectedAppointment(null);
           Swal.fire("Success !", "Booking is Confirm !", "success");
+          refetch();
         }
       });
   };
