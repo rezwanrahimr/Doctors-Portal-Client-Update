@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 
 const SignUp = () => {
@@ -7,6 +7,7 @@ const SignUp = () => {
   // Call Context!
   const { createUserWithEmail, signInWithGoogle, profileUpdate } =
     useContext(AuthContext);
+  const navigate = useNavigate();
   const handleSignUp = (event) => {
     event.preventDefault();
     const name = event.target.name.value;
@@ -21,12 +22,13 @@ const SignUp = () => {
         };
         user &&
           profileUpdate(profileInfo)
-            .then(() => {})
+            .then(() => {
+              saveUser(name, email);
+            })
             .catch((err) => console.log(err));
       })
 
       .catch((error) => {
-        const errorCode = error.code;
         const errorMessage = error.message;
         setErrorMessage(errorMessage);
       });
@@ -40,10 +42,26 @@ const SignUp = () => {
         console.log(user);
       })
       .catch((error) => {
-        const errorCode = error.code;
         const errorMessage = error.message;
-        const email = error.customData.email;
         setErrorMessage(errorMessage);
+      });
+  };
+
+  // Save User on Database
+  const saveUser = (email, name) => {
+    const user = { name, email };
+    fetch("http://localhost:5000/user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.acknowledged) {
+          navigate("/");
+        }
       });
   };
   return (

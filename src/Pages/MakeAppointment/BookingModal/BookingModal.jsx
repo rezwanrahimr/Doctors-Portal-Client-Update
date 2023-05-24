@@ -44,6 +44,13 @@ const BookingModal = ({
           setSelectedAppointment(null);
           Swal.fire("Success !", "Booking is Confirm !", "success");
           refetch();
+        } else {
+          setSelectedAppointment(null);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "You Can Booking 1 Treatment ! Try Another Time",
+          });
         }
       });
   };
@@ -83,21 +90,25 @@ const BookingModal = ({
               type="text"
               placeholder="Full Name"
               name="name"
+              readOnly
               value={user?.displayName}
               className="input input-bordered w-full "
             />
-            <input
-              type="number"
-              placeholder="Phone Number"
-              name="number"
-              value={user?.phoneNumber}
-              className="input input-bordered w-full "
-            />
+
             <input
               type="email"
               placeholder="Email"
               name="email"
+              readOnly
               value={user?.email}
+              className="input input-bordered w-full "
+            />
+            <input
+              type="number"
+              required
+              placeholder="Phone Number"
+              name="number"
+              value={user?.phoneNumber}
               className="input input-bordered w-full "
             />
             <input type="submit" className="btn btn-accent w-full mt-2" />

@@ -7,6 +7,7 @@ import Login from "../Pages/Login/Login";
 import SignUp from "../Pages/SignUp/SignUp";
 import PrivateRoute from "./PrivateRoute";
 import DashboardLayout from "../layout/DashboardLayout";
+import MyAppointments from "../Pages/Dashboard/MyAppointments/MyAppointments";
 
 // Create Browser Router & Set Routes !
 const router = createBrowserRouter([
@@ -20,7 +21,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/appointment",
-        element: <MakeAppointment></MakeAppointment>,
+        element: (
+          <PrivateRoute>
+            <MakeAppointment></MakeAppointment>
+          </PrivateRoute>
+        ),
       },
     ],
   },
@@ -45,6 +50,12 @@ const router = createBrowserRouter([
         <DashboardLayout></DashboardLayout>
       </PrivateRoute>
     ),
+    children: [
+      {
+        path: "/dashboard",
+        element: <MyAppointments></MyAppointments>,
+      },
+    ],
   },
 ]);
 
