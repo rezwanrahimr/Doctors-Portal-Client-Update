@@ -26,7 +26,7 @@ const MyAppointments = () => {
   console.log(data);
   return (
     <div>
-      <h2 className="text-3xl font-bold my-5">My Appointment</h2>
+      <h2 className="text-3xl font-bold my-5">MY APPOINTMENT</h2>
       <div className="overflow-x-auto">
         <table className="table w-full  ">
           {/* head */}

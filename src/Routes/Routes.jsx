@@ -8,6 +8,8 @@ import SignUp from "../Pages/SignUp/SignUp";
 import PrivateRoute from "./PrivateRoute";
 import DashboardLayout from "../layout/DashboardLayout";
 import MyAppointments from "../Pages/Dashboard/MyAppointments/MyAppointments";
+import AllUser from "../Pages/Dashboard/AllUser/AllUser";
+import AdminRoute from "./AdminRoute";
 
 // Create Browser Router & Set Routes !
 const router = createBrowserRouter([
@@ -54,6 +56,14 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <MyAppointments></MyAppointments>,
+      },
+      {
+        path: "/dashboard/allUser",
+        element: (
+          <AdminRoute>
+            <AllUser></AllUser>
+          </AdminRoute>
+        ),
       },
     ],
   },

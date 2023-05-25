@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 import Swal from "sweetalert2";
+import useJWT from "../../hooks/useJWT";
 
 const Login = () => {
   const [email, setEmail] = useState(null);
@@ -9,11 +10,15 @@ const Login = () => {
   // Call Context
   const { signInwithEmail, signInWithGoogle, resetPassword } =
     useContext(AuthContext);
-
+  const [loginEmail, setEmailLogin] = useState("");
+  const [token] = useJWT(loginEmail);
   let navigate = useNavigate();
   let location = useLocation();
-
   let from = location.state?.from?.pathname || "/";
+
+  if (token) {
+    navigate(from, { replace: true });
+  }
 
   const handleLogin = (event) => {
     event.preventDefault();
@@ -22,10 +27,9 @@ const Login = () => {
     signInwithEmail(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        navigate(from, { replace: true });
+        setEmailLogin(user?.email);
       })
       .catch((error) => {
-        const errorCode = error.code;
         const errorMessage = error.message;
         setErrorMessage(errorMessage);
       });
@@ -36,12 +40,10 @@ const Login = () => {
     signInWithGoogle()
       .then((result) => {
         const user = result.user;
-        navigate(from, { replace: true });
+        saveUser(user?.name, user?.email);
       })
       .catch((error) => {
-        const errorCode = error.code;
         const errorMessage = error.message;
-        const email = error.customData.email;
         setErrorMessage(errorMessage);
       });
   };
@@ -57,13 +59,28 @@ const Login = () => {
           Swal.fire("Please...", "Check Your Email !", "success");
         })
         .catch((error) => {
-          const errorCode = error.code;
           const errorMessage = error.message;
           setErrorMessage(errorMessage);
         });
     }
   };
-
+  // Save User on Database
+  const saveUser = (name, email) => {
+    const user = { name, email };
+    fetch("http://localhost:5000/user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.acknowledged) {
+          setEmailLogin(email);
+        }
+      });
+  };
   return (
     <div className="hero min-h-screen my-24">
       <div className="hero-content flex-col lg:flex-row-reverse">

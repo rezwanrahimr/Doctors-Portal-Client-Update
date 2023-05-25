@@ -45,7 +45,7 @@ const SignUp = () => {
     signInWithGoogle()
       .then((result) => {
         const user = result.user;
-        console.log(user);
+        saveUser(user?.name, user?.email);
       })
       .catch((error) => {
         const errorMessage = error.message;
