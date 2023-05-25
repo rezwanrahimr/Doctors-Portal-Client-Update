@@ -1,13 +1,19 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
+import useJWT from "../../hooks/useJWT";
 
 const SignUp = () => {
   const [errorMessage, setErrorMessage] = useState("");
   // Call Context!
   const { createUserWithEmail, signInWithGoogle, profileUpdate } =
     useContext(AuthContext);
+  const [signUpEmail, setSignUpEmail] = useState("");
+  const [token] = useJWT(signUpEmail);
   const navigate = useNavigate();
+  if (token) {
+    navigate("/");
+  }
   const handleSignUp = (event) => {
     event.preventDefault();
     const name = event.target.name.value;
@@ -48,7 +54,7 @@ const SignUp = () => {
   };
 
   // Save User on Database
-  const saveUser = (email, name) => {
+  const saveUser = (name, email) => {
     const user = { name, email };
     fetch("http://localhost:5000/user", {
       method: "POST",
@@ -60,7 +66,7 @@ const SignUp = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.acknowledged) {
-          navigate("/");
+          setSignUpEmail(email);
         }
       });
   };
