@@ -5,7 +5,7 @@ import Loader from "../../Shared/Loader/Loader";
 
 const MyAppointments = () => {
   const { user } = useContext(AuthContext);
-  const { data, isLoading } = useQuery({
+  const { data = [], isLoading } = useQuery({
     queryKey: ["bookings", user?.email],
     queryFn: async () => {
       const res = await fetch(
@@ -20,10 +20,11 @@ const MyAppointments = () => {
       return data;
     },
   });
+
   if (isLoading) {
     return <Loader></Loader>;
   }
-  console.log(data);
+
   return (
     <div>
       <h2 className="text-3xl font-bold my-5">MY APPOINTMENT</h2>
@@ -39,9 +40,9 @@ const MyAppointments = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map((appointment, index) => (
+            {data?.map((appointment, i) => (
               <tr key={appointment._id}>
-                <th>{index + 1}</th>
+                <th>{i + 1}</th>
                 <td>{appointment.patientName}</td>
                 <td>{appointment.treatmentName}</td>
                 <td>{appointment.slots}</td>
