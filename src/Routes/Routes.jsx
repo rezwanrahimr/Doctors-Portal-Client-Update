@@ -12,6 +12,7 @@ import AllUser from "../Pages/Dashboard/AllUser/AllUser";
 import AdminRoute from "./AdminRoute";
 import AddDoctor from "../Pages/Dashboard/AddDoctor/AddDoctor";
 import ManageDoctors from "../Pages/Dashboard/ManageDoctors/ManageDoctors";
+import Payment from "../Pages/Dashboard/Payment/Payment";
 
 // Create Browser Router & Set Routes !
 const router = createBrowserRouter([
@@ -80,6 +81,16 @@ const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <ManageDoctors></ManageDoctors>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "/dashboard/payment/:id",
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/bookings/${params.id}`),
+        element: (
+          <AdminRoute>
+            <Payment></Payment>
           </AdminRoute>
         ),
       },

@@ -9,7 +9,7 @@ const BookingModal = ({
   setSelectedAppointment,
   refetch,
 }) => {
-  const { name, slots } = selectdAppointment;
+  const { name, slots, price } = selectdAppointment;
   const { user } = useContext(AuthContext);
 
   const handleBooking = (event) => {
@@ -28,6 +28,7 @@ const BookingModal = ({
       slots,
       email,
       number,
+      price,
     };
 
     // Post Booking Database

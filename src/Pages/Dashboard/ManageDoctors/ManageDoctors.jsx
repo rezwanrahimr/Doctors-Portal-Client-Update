@@ -49,14 +49,16 @@ const ManageDoctors = () => {
     });
   };
   return (
-    <div>
+    <div className="p-8">
       {data.length == 0 ? (
         <div className="flex items-center justify-center">
           <h1 className="font-bold">No Data Found !</h1>
         </div>
       ) : (
         <div>
-          <h1 className="text-3xl font-bold my-5">MANAGE DOCTORS</h1>
+          <h1 className="text-3xl font-semi-bold my-5 italic">
+            MANAGE DOCTORS
+          </h1>
 
           <div className="overflow-x-auto w-full">
             <table className="table w-full">
@@ -78,7 +80,7 @@ const ManageDoctors = () => {
                     </th>
                     <td>
                       <div className="avatar">
-                        <div className="mask mask-squircle w-12 h-12">
+                        <div className="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                           <img src={doctor?.photo} alt="Doctor Photo" />
                         </div>
                       </div>
