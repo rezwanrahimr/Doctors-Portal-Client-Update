@@ -4,7 +4,7 @@ const useSaveUser = (name, email) => {
   const [status, setStatus] = useState({});
   const user = { name, email };
   useEffect(() => {
-    fetch("http://localhost:5000/user", {
+    fetch("https://doctors-portal-server-2023-ivory.vercel.app/user", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

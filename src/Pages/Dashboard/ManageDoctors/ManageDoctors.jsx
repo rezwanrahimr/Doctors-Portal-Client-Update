@@ -10,7 +10,9 @@ const ManageDoctors = () => {
   } = useQuery({
     queryKey: ["/doctors"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000/doctors");
+      const res = await fetch(
+        "https://doctors-portal-server-2023-ivory.vercel.app/doctors"
+      );
       const data = await res.json();
       return data;
     },
@@ -32,12 +34,15 @@ const ManageDoctors = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:5000/doctors/${_id}`, {
-          method: "DELETE",
-          headers: {
-            authorization: `bearer ${localStorage.getItem("accessToken")}`,
-          },
-        })
+        fetch(
+          `https://doctors-portal-server-2023-ivory.vercel.app/doctors/${_id}`,
+          {
+            method: "DELETE",
+            headers: {
+              authorization: `bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        )
           .then((res) => res.json())
           .then((data) => {
             if (data.acknowledged) {

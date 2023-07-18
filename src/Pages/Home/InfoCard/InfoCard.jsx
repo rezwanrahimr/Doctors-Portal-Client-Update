@@ -7,7 +7,6 @@ const InfoCard = ({ card }) => {
           ? "bg-gradient-to-r from-primary to-secondary"
           : " "
       }`}
-      style={{ width: "390px", height: "170px" }}
     >
       <figure>
         <img src={icon} alt="Movie" />

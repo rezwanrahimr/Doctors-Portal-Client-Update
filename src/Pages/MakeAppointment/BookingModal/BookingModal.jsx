@@ -32,7 +32,7 @@ const BookingModal = ({
     };
 
     // Post Booking Database
-    fetch("http://localhost:5000/bookings", {
+    fetch("https://doctors-portal-server-2023-ivory.vercel.app/bookings", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

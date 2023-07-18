@@ -1,6 +1,7 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
 import Loader from "../../Shared/Loader/Loader";
+import Swal from "sweetalert2";
 
 const CheckOutForm = ({ booking }) => {
   const [cardError, setCardError] = useState("");
@@ -11,11 +12,14 @@ const CheckOutForm = ({ booking }) => {
 
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
-    fetch("http://localhost:5000/create-payment-intent", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(booking),
-    })
+    fetch(
+      "https://doctors-portal-server-2023-ivory.vercel.app/create-payment-intent",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(booking),
+      }
+    )
       .then((res) => res.json())
       .then((data) => setClientSecret(data.clientSecret));
   }, [booking]);
@@ -49,7 +53,7 @@ const CheckOutForm = ({ booking }) => {
       setCardError("");
     }
 
-    setProcessing(true);
+    // setProcessing(true);
     const { paymentIntent, error: pamentError } =
       await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
@@ -66,8 +70,27 @@ const CheckOutForm = ({ booking }) => {
     }
     if (paymentIntent.status === "succeeded") {
       setProcessing(false);
+      Swal.fire("Success", "Thanks For Payment !", "success");
+
+      const paymentData = {
+        price: booking.price,
+        transitionId: paymentIntent.id,
+        bookingId: booking._id,
+      };
+
+      fetch("https://doctors-portal-server-2023-ivory.vercel.app/payment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(paymentData),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+        });
     }
-    console.log(paymentIntent);
   };
 
   return (
@@ -90,7 +113,7 @@ const CheckOutForm = ({ booking }) => {
           }}
         />
         <button
-          className="btn btn-primary"
+          className="btn btn-primary mt-5"
           type="submit"
           disabled={!stripe || !clientSecret}
         >

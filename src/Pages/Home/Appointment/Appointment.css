@@ -11,3 +11,9 @@
 .img-position img {
   height: 490px;
 }
+
+@media (max-width: "768px") {
+  .appointment-container {
+    margin: 50px 0 50px 0 !important;
+  }
+}

@@ -15,16 +15,24 @@ const Payment = () => {
     booking;
 
   return (
-    <div>
-      <div>
-        <h1>Hello, {user.displayName}</h1>
-        <h2>Please Pay for {treatmentName}</h2>
-        <p>
-          Your Appointment:{appointmentDate} at {slots}
+    <div className="p-8">
+      <div style={{ fontFamily: "Pacifico,cursive", lineHeight: "50px" }}>
+        <h1 className="text-4xl">
+          <span className="text-secondary">Hello,</span> {user.displayName}
+        </h1>
+        <h2 className="text-3xl my-2">
+          Please Pay for <span className="text-secondary">{treatmentName}</span>
+        </h2>
+        <p className="text-3xl bg-white">
+          Your Appointment:{" "}
+          <span className="text-secondary">{appointmentDate}</span> at{" "}
+          <span className="text-secondary">{slots}</span>
         </p>
-        <p>Please Pay: ${price}</p>
+        <p className="text-3xl mt-2 bg-white">
+          Please Pay: $ <span>{price}</span>
+        </p>
       </div>
-      <div className="w-96">
+      <div className="w-96 my-12 bg-white p-8">
         <Elements stripe={stripePromise}>
           <CheckOutForm booking={booking}></CheckOutForm>
         </Elements>

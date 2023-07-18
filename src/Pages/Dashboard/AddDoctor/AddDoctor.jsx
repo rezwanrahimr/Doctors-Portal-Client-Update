@@ -7,7 +7,9 @@ const AddDoctor = () => {
   const { data: treatment, isLoading } = useQuery({
     queryKey: "treatment",
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000/treatment");
+      const res = await fetch(
+        "https://doctors-portal-server-2023-ivory.vercel.app/treatment"
+      );
       const data = await res.json();
       return data;
     },
@@ -28,7 +30,7 @@ const AddDoctor = () => {
     //  Store Photo on ImageHosting Site
     const formatData = new FormData();
     formatData.append("image", photo);
-    fetch(`https://api.imgbb.com/1/upload?expiration=600&key=${imageKey}`, {
+    fetch(`https://api.imgbb.com/1/upload?key=${imageKey}`, {
       method: "POST",
       body: formatData,
     })
@@ -42,7 +44,7 @@ const AddDoctor = () => {
             photo: data.data.url,
           };
 
-          fetch(`http://localhost:5000/doctors`, {
+          fetch(`https://doctors-portal-server-2023-ivory.vercel.app/doctors`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

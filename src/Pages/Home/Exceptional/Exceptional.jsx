@@ -1,4 +1,3 @@
-import React from "react";
 import treatment from "../../../assets/images/treatment.png";
 
 const Exceptional = () => {
@@ -13,7 +12,7 @@ const Exceptional = () => {
           height={"576px"}
         />
       </div>
-      <div className="card-body w-full  ps-24">
+      <div className="card-body w-full  md:ps-24">
         <h2 className="card-title text-5xl">
           Exceptional Dental <br /> Care, on Your Terms
         </h2>

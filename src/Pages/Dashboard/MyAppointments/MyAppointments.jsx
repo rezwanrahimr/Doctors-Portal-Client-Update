@@ -6,16 +6,16 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const MyAppointments = () => {
-  const { user } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
   const {
-    data = [],
+    data: appointmentData = [],
     isLoading,
     refetch,
   } = useQuery({
     queryKey: ["bookings", user?.email],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:5000/bookings?email=${user?.email}`,
+        `https://doctors-portal-server-2023-ivory.vercel.app/bookings?email=${user?.email}`,
         {
           headers: {
             authorization: `bearer ${localStorage.getItem("accessToken")}`,
@@ -27,7 +27,7 @@ const MyAppointments = () => {
     },
   });
 
-  if (isLoading) {
+  if (isLoading || loading) {
     return <Loader></Loader>;
   }
 
@@ -43,12 +43,15 @@ const MyAppointments = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:5000/bookings/${_id}`, {
-          method: "DELETE",
-          headers: {
-            authorization: `bearer ${localStorage.getItem("accessToken")}`,
-          },
-        })
+        fetch(
+          `https://doctors-portal-server-2023-ivory.vercel.app/bookings/${_id}`,
+          {
+            method: "DELETE",
+            headers: {
+              authorization: `bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        )
           .then((res) => res.json())
           .then((data) => {
             console.log(data);
@@ -61,6 +64,7 @@ const MyAppointments = () => {
     });
   };
 
+  console.log("app", appointmentData);
   return (
     <div className="p-8">
       <h2 className="text-3xl font-semi-bold my-5">MY APPOINTMENT</h2>
@@ -77,18 +81,29 @@ const MyAppointments = () => {
             </tr>
           </thead>
           <tbody>
-            {data?.map((appointment, i) => (
+            {appointmentData?.map((appointment, i) => (
               <tr key={appointment._id}>
                 <th>{i + 1}</th>
                 <td>{appointment.patientName}</td>
                 <td>{appointment.treatmentName}</td>
                 <td>{appointment.slots}</td>
                 <td>
-                  <Link to={`/dashboard/payment/${appointment._id}`}>
-                    <button className="btn btn-success text-white">Pay</button>
-                  </Link>
+                  {appointment.paid === true ? (
+                    <button className="btn btn-xs border-none text-secondary py-2">
+                      {" "}
+                      Paid <br /> Id: {appointment.transitionId}
+                    </button>
+                  ) : (
+                    <Link to={`/dashboard/payment/${appointment._id}`}>
+                      <button className="btn btn-success text-white">
+                        Pay
+                      </button>
+                    </Link>
+                  )}
                   <button
-                    className="btn btn-error ms-3 text-white"
+                    className={`btn btn-error ms-3 text-white ${
+                      appointment.paid === true ? "btn-disabled" : " "
+                    }`}
                     onClick={() => handleDeleteAppointment(appointment._id)}
                   >
                     cancel
