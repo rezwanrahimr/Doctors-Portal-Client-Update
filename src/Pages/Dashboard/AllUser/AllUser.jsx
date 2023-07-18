@@ -60,7 +60,7 @@ const AllUser = () => {
       confirmButtonText: "Yes",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:5000/user/${id}`, {
+        fetch(`https://creative-agency-backend-henna.vercel.app/user/${id}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
